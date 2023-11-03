@@ -1,12 +1,14 @@
 'use client'; // when we import a hook, we use 'use client'
-
+import React from 'react';
 import {useState} from 'react'
 import {useSession} from 'next-auth/react' //this allows us to know which user is logged in
-import { Router, useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import Form from '@components/Form';
 
 const CreatePrompt = () => {
-  //2:12:47
+  //2:13:41
+  const router = useRouter();
+  const {data: session} = useSession();
   const [submitting, setSubmitting] = useState(false);
   const [post, setPost] = useState({
     prompt: '',
@@ -29,7 +31,7 @@ const CreatePrompt = () => {
       })
 
       if(response.ok) {
-        Router.push('/');
+        router.push('/');
       }
 
     } catch (error) {

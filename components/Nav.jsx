@@ -41,9 +41,9 @@ const Nav = () => {
               Create Post
             </Link>
 
-            <buton type="button" onClick={signOut} className="outline_btn">
+            <button type="button" onClick={signOut} className="outline_btn">
               Sign Out
-            </buton>
+            </button>
 
             <Link href="/profile">
               <Image
