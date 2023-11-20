@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Form from '@components/Form';
 
 const EditPrompt = () => {
-    //2:13:41
     const router = useRouter();
     const [submitting, setSubmitting] = useState(false);
     const searchParams = useSearchParams();
