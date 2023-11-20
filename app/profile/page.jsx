@@ -26,7 +26,7 @@ const MyProfile = () => {
     }
 
     const handleDelete = async (post) => {
-      const hasConfirmed = confirm("Are you sure you want to delete this prompt?");
+      const hasConfirmed = confirm("Are you sure you want to delete this workout?");
       if (hasConfirmed) {
         try{
           await fetch(`/api/prompt/${post._id.toString()}`, {
@@ -42,7 +42,7 @@ const MyProfile = () => {
   return (
     <Profile
         name="My"
-        description="Welcome to your profile page"
+        description="View your shared workouts"
         data = {posts}
         handleEdit={handleEdit}
         handleDelete={handleDelete}
