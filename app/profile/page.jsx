@@ -43,7 +43,7 @@ const MyProfile = () => {
   return (
     <Profile
         name="My"
-        description="View your shared workouts"
+        description="View your workouts"
         data = {posts}
         handleEdit={handleEdit}
         handleDelete={handleDelete}
