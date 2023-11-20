@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from 'next/navigation';
 
 import PromptCard from "./PromptCard";
 
-const PromptCardList = ({ data, handleTagClick }) => {
+const PromptCardList = ({ data, handleTagClick, handleSave }) => {
   return (
     <div className='mt-16 prompt_layout'>
       {data.map((post) => (
@@ -12,6 +14,7 @@ const PromptCardList = ({ data, handleTagClick }) => {
           key={post._id}
           post={post}
           handleTagClick={handleTagClick}
+          handleSave={handleSave}
         />
       ))}
     </div>
@@ -21,6 +24,10 @@ const PromptCardList = ({ data, handleTagClick }) => {
 const Feed = () => {
   const [allPosts, setAllPosts] = useState([]);
 
+  //session user
+  const { data: session } = useSession();
+  //router
+  const router = useRouter();
   // Search states
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
@@ -67,6 +74,30 @@ const Feed = () => {
     setSearchedResults(searchResult);
   };
 
+  const handleSave = async (post) => {
+    console.log('Save me');
+    console.log(post);
+    console.log(session?.user.id);
+    try {
+      const response = await fetch('/api/prompt/new',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            prompt: post.prompt,
+            userId: session?.user.id,
+            tag: post.tag + ' #' + post.creator.username
+          })
+        })
+
+      if (response.ok) {
+        router.push(`/profile/${session?.user.id}?name=${session?.user.name}`);
+      }
+
+    } catch (error) {
+      console.log(error);
+    } 
+  }
+
   return (
     <section className='feed'>
       <form className='relative w-full flex-center'>
@@ -85,9 +116,10 @@ const Feed = () => {
         <PromptCardList
           data={searchedResults}
           handleTagClick={handleTagClick}
+          handleSave={handleSave}
         />
       ) : (
-        <PromptCardList data={allPosts} handleTagClick={handleTagClick} />
+          <PromptCardList data={allPosts} handleTagClick={handleTagClick} handleSave={handleSave} />
       )}
     </section>
   );

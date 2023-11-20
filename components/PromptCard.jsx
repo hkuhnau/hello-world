@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 
-const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
+const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick, handleSave }) => {
   const { data: session } = useSession();
   const pathName = usePathname();
   const router = useRouter();
@@ -70,7 +70,7 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
         className='font-inter text-sm blue_gradient cursor-pointer'
         onClick={() => handleTagClick && handleTagClick(post.tag)}
       >
-        #{post.tag}
+        {post.tag}
       </p>
 
       {session?.user.id === post.creator._id && pathName === "/profile" && (
@@ -89,6 +89,19 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
           </p>
         </div>
       )}
+
+      {session?.user.id && session?.user.id !== post.creator._id && (pathName === "/" || pathName.includes('/profile')) && (
+        <div className='mt-5 flex-center gap-4 border-t border-gray-100 pt-3'>
+          <button
+          type='button'
+          className='font-satoshi font-semibold text-orange-900'
+            onClick={() => handleSave(post)}
+          >
+            Save
+          </button>
+        </div>
+      )}
+
     </div>
   );
 };
