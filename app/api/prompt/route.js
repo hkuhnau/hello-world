@@ -8,12 +8,11 @@ export const GET = async (request) => {
     try{
         await connectToDB();
         const prompts = await Prompt.find({}).populate('creator');
-
+        
         return new Response(JSON.stringify(prompts), {
             status: 200
         })
 
-        router.reload();
     } catch (error) {
         return new Response(JSON.stringify('Failed to fetch prompts'), {
             status:500
