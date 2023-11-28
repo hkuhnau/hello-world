@@ -1,8 +1,10 @@
 import { connectToDB } from '@utils/database';
 import Prompt from '@models/prompt';
+import {useRouter} from 'next/router';
 export const revalidate = 0;
 
 export const GET = async (request) => {
+    const router = useRouter();
     try{
         await connectToDB();
         const prompts = await Prompt.find({}).populate('creator');
@@ -10,6 +12,8 @@ export const GET = async (request) => {
         return new Response(JSON.stringify(prompts), {
             status: 200
         })
+
+        router.reload();
     } catch (error) {
         return new Response(JSON.stringify('Failed to fetch prompts'), {
             status:500
